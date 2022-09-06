@@ -2,5 +2,5 @@
 Steps
 Create an ERC20 token contract for the Ethereum chain.
 Create an ERC20Burnable token contract for the destination chain. ...
-Deploy contracts to the Ropsten and Harmony testnets.
+Deploy contracts to the Ropsten and other testnets.
 Create frontend to transfer tokens from user's wallet to the bridge.
