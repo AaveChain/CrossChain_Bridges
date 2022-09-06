@@ -1,6 +1,6 @@
 const serverUrl = "";
 const appId = "";
-Moralis.start({ serverUrl, appId }); 
+fireblocks.start({ serverUrl, appId }); 
 
 const mainTokenAddress = "";
 const mainBridgeAddress = "";
@@ -8,20 +8,20 @@ const mainBridgeAddress = "";
 login();
 
 async function login(){
-    Moralis.Web3.enableWeb3().then(async function (){
+    fireblocks.Web3.enableWeb3().then(async function (){
         renderBridgeData();
         subscribeUpdateBridged();
-        const chainIdHex = await Moralis.switchNetwork("0x4"); 
+        const chainIdHex = await fireblocks.switchNetwork("0x4"); 
     });
 }
 
 async function bridge(){
     const amountToBridge = document.getElementById("amountToken").value;
     const options = {type: "erc20", 
-                 amount: Moralis.Units.Token(amountToBridge, "18"), 
+                 amount: fireblocks.Units.Token(amountToBridge, "18"), 
                  receiver: mainBridgeAddress,
                  contractAddress: mainTokenAddress}
-    let result = await Moralis.transfer(options)
+    let result = await fireblocks.transfer(options)
 }
 
 async function renderBridgeData () {
@@ -34,7 +34,7 @@ async function renderBridgeData () {
 }
 
 async function subscribeUpdateBridged(){
-    let query = new Moralis.Query("TokensBridged");
+    let query = new fireblocks.Query("TokensBridged");
     query.equalTo("requester", ethereum.selectedAddress);
     const subscriptionBridged = await query.subscribe();
     subscriptionBridged.on('create', async (object) => {
@@ -44,14 +44,14 @@ async function subscribeUpdateBridged(){
 }
 
 async function queryLocked(){
-    const query = new Moralis.Query("TokensLocked");
+    const query = new fireblocks.Query("TokensLocked");
     query.equalTo("requester", ethereum.selectedAddress);
     const results = await query.find()
     return JSON.parse(JSON.stringify(results, ["mainDepositHash", "amount", "requester"]))
 }
 
 async function queryBridged(){
-    const query = new Moralis.Query("TokensBridged");
+    const query = new fireblocks.Query("TokensBridged");
     query.equalTo("requester", ethereum.selectedAddress);
     const results = await query.find()
     return JSON.parse(JSON.stringify(results, ["mainDepositHash", "amount", "requester"]))
